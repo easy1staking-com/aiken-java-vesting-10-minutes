@@ -1,4 +1,4 @@
-# Aiken + Java - Vesting Contract
+# Vesting Contract with Aiken + Java 
 
 In this repository you will find the famous [Vesting](https://aiken-lang.org/example--vesting) Cardano Plutus contract 
 developed with [Aiken](https://aiken-lang.org/) along with the Java code required to use it on the Cardano `preprod` testnet.
