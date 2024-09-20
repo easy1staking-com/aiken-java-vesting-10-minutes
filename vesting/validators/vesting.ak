@@ -1,5 +1,5 @@
 use aiken/collection/list
-use aiken/crypto.{VerificationKeyHash}
+use aiken/crypto.{Blake2b_224, Hash, VerificationKey}
 use aiken/interval.{Finite}
 use cardano/transaction.{OutputReference, Transaction, ValidityRange}
 
@@ -7,12 +7,15 @@ pub type Datum {
   /// POSIX time in millisecond, e.g. 1672843961000
   lock_until: Int,
   /// Owner's credentials
-  owner: VerificationKeyHash,
+  owner: Hash<Blake2b_224, VerificationKey>,
   /// Beneficiary's credentials
-  beneficiary: VerificationKeyHash,
+  beneficiary: Hash<Blake2b_224, VerificationKey>,
 }
 
-fn must_be_signed_by(transaction: Transaction, vk: VerificationKeyHash) {
+fn must_be_signed_by(
+  transaction: Transaction,
+  vk: Hash<Blake2b_224, VerificationKey>,
+) {
   list.has(transaction.extra_signatories, vk)
 }
 
