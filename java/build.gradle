@@ -19,6 +19,9 @@ dependencies {
     compileOnly 'com.bloxbean.cardano:cardano-client-annotation-processor:0.6.0'
     annotationProcessor 'com.bloxbean.cardano:cardano-client-annotation-processor:0.6.0'
 
+    // logging
+    implementation 'org.slf4j:slf4j-simple:2.0.11'
+
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
@@ -26,8 +29,11 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.30'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
 }
 
-test {
+tasks.named('test') {
     useJUnitPlatform()
 }
