@@ -1,0 +1,83 @@
+{
+  "preamble": {
+    "title": "easy1staking/vesting",
+    "description": "Aiken contracts for project 'easy1staking/vesting'",
+    "version": "0.0.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.2+7047c77"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "vesting.vesting.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/vesting~1Datum"
+        }
+      },
+      "redeemer": {
+        "title": "_redeemer",
+        "schema": {
+          "$ref": "#/definitions/Void"
+        }
+      },
+      "compiledCode": "59014b01010032323232323225333002323232323253330073370e900118041baa001132323232533300b3370e900018061baa00213232533300d3300100a375c60226024601e6ea80085288a999806998008051bae301130123012300f3754004264664464a66602266e1d200230123754002266e24008dd6980a98099baa00114a0600660246ea8c00cc048dd50011809180998099809980998099809980998081baa00b375a600260206ea800c8c0480045281119198008009bac3013301430143014301430143014301430143011375400644a66602600229404c94ccc044cdc79bae301500200414a2266006006002602a002601e601a6ea8008594ccc028cdc3a400060166ea801454ccc034c030dd50028a4c2c2c601a601c004601800260126ea800458c028c02c008c024004c024008c01c004c010dd50008a4c26cacae6955ceaab9e5573eae855d11",
+      "hash": "5c0911b6aaf7ff32fb6b1516a1bc11f35a6800dd4e7fcbbc40d3ee77"
+    },
+    {
+      "title": "vesting.vesting.else",
+      "compiledCode": "59014b01010032323232323225333002323232323253330073370e900118041baa001132323232533300b3370e900018061baa00213232533300d3300100a375c60226024601e6ea80085288a999806998008051bae301130123012300f3754004264664464a66602266e1d200230123754002266e24008dd6980a98099baa00114a0600660246ea8c00cc048dd50011809180998099809980998099809980998081baa00b375a600260206ea800c8c0480045281119198008009bac3013301430143014301430143014301430143011375400644a66602600229404c94ccc044cdc79bae301500200414a2266006006002602a002601e601a6ea8008594ccc028cdc3a400060166ea801454ccc034c030dd50028a4c2c2c601a601c004601800260126ea800458c028c02c008c024004c024008c01c004c010dd50008a4c26cacae6955ceaab9e5573eae855d11",
+      "hash": "5c0911b6aaf7ff32fb6b1516a1bc11f35a6800dd4e7fcbbc40d3ee77"
+    }
+  ],
+  "definitions": {
+    "Int": {
+      "dataType": "integer"
+    },
+    "VerificationKeyHash": {
+      "title": "VerificationKeyHash",
+      "dataType": "bytes"
+    },
+    "Void": {
+      "title": "Unit",
+      "anyOf": [
+        {
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        }
+      ]
+    },
+    "vesting/Datum": {
+      "title": "Datum",
+      "anyOf": [
+        {
+          "title": "Datum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "lock_until",
+              "description": "POSIX time in millisecond, e.g. 1672843961000",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "owner",
+              "description": "Owner's credentials",
+              "$ref": "#/definitions/VerificationKeyHash"
+            },
+            {
+              "title": "beneficiary",
+              "description": "Beneficiary's credentials",
+              "$ref": "#/definitions/VerificationKeyHash"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
