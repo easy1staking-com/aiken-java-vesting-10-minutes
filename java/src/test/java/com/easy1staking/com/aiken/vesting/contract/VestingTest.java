@@ -1,7 +1,6 @@
 package com.easy1staking.com.aiken.vesting.contract;
 
 import com.bloxbean.cardano.client.account.Account;
-import com.bloxbean.cardano.client.api.TransactionEvaluator;
 import com.bloxbean.cardano.client.api.model.Amount;
 import com.bloxbean.cardano.client.backend.blockfrost.common.Constants;
 import com.bloxbean.cardano.client.backend.blockfrost.service.BFBackendService;
@@ -9,7 +8,6 @@ import com.bloxbean.cardano.client.function.helper.SignerProviders;
 import com.bloxbean.cardano.client.quicktx.QuickTxBuilder;
 import com.bloxbean.cardano.client.quicktx.ScriptTx;
 import com.bloxbean.cardano.client.quicktx.Tx;
-import com.bloxbean.cardano.client.supplier.ogmios.OgmiosTransactionEvaluator;
 import com.bloxbean.cardano.client.util.HexUtil;
 import com.easy1staking.aiken.vesting.contract.vesting.VestingValidator;
 import com.easy1staking.aiken.vesting.contract.vesting.model.Redeemer;
@@ -27,11 +25,13 @@ import static com.bloxbean.cardano.client.common.model.Networks.preprod;
 @Slf4j
 public class VestingTest {
 
+    // The wallet mnemonic of the owner wallet
     private static final String OWNER_MNEMONIC = "possible rural suit royal identify capital nose since affair hamster cancel hat hire gravity make advice kiwi improve glory camera crisp prepare fortune pottery";
 
+    // The wallet mnemonic of the beneficiary wallet
     private static final String BENEFICIARY_MNEMONIC = "interest prepare reduce noise baby moral vicious convince soft melt sunset hurry manage canal make orange tattoo early stumble suffer yard hybrid blade body";
 
-    // This is our entrypoint to work w/ the contract
+    // This class provides all the facilities to work with the Vesting Contract
     private final VestingValidator vestingValidator = new VestingValidator(preprod());
 
     // Owner account
@@ -40,25 +40,26 @@ public class VestingTest {
     // Beneficiary account
     private final Account beneficiary = new Account(preprod(), BENEFICIARY_MNEMONIC);
 
-    // Blockfrost API
-    private final BFBackendService bfBackendService = new BFBackendService(Constants.BLOCKFROST_PREPROD_URL, "preprod9v5e2dLyUa88oRBNQctiIX469J204eeO");
-//    private BFBackendService bfBackendService = new BFBackendService(Constants.BLOCKFROST_PREPROD_URL, "<enter api key here>");
+    // Blockfrost API - NOTE please replace api key here below
+    private final BFBackendService bfBackendService = new BFBackendService(Constants.BLOCKFROST_PREPROD_URL, "<enter api key here>");
 
     @Test
     public void payToContract() throws Exception {
 
         var ownerPublicKeyHash = owner.getBaseAddress().getPaymentCredentialHash().get();
         log.info("Owner public key hash Hex Encoded: {}", HexUtil.encodeHexString(ownerPublicKeyHash));
+        log.info("Owner base address: {}", owner.baseAddress());
 
         var beneficiaryPublicKeyHash = beneficiary.getBaseAddress().getPaymentCredentialHash().get();
         log.info("Beneficiary public key hash Hex Encoded: {}", HexUtil.encodeHexString(beneficiaryPublicKeyHash));
+        log.info("Beneficiary base address: {}", beneficiary.baseAddress());
 
-        // Set vesting time in 10 minutes
+        // Set vesting time in 15 minutes
         // Please note that:
         // 1. the chain only understand UTC time.
         // 2. the time is in POSIX Time in Milliseconds
         var now = LocalDateTime.now(ZoneOffset.UTC);
-        var in10Minutes = now.plusMinutes(30).toEpochSecond(ZoneOffset.UTC) * 1_000;
+        var in10Minutes = now.plusMinutes(15).toEpochSecond(ZoneOffset.UTC) * 1_000;
 
         var datum = new DatumData();
         datum.setOwner(ownerPublicKeyHash);
@@ -84,7 +85,7 @@ public class VestingTest {
     @Test
     public void withdraw() throws Exception {
 
-        var transactionHash = "a91b33e8432283f69cf10daf331b218434cad46b902fb32c98fa10e34c4c9481";
+        var transactionHash = "<insert tx hash here>";
         var outputIndex = 0;
 
         var scriptAddress = vestingValidator.getScriptAddress();
@@ -108,9 +109,8 @@ public class VestingTest {
                 .withSigner(SignerProviders.signerFrom(owner))
                 .withRequiredSigners(owner.getBaseAddress())
                 .feePayer(owner.baseAddress())
-                .validFrom(recentSlot - 60)
-                .validTo(recentSlot + 60)
-                .withTxEvaluator(ogmiosTE())
+                .validFrom(recentSlot)
+                .validTo(recentSlot + 120)
                 .completeAndWait();
 
 
@@ -119,7 +119,7 @@ public class VestingTest {
     @Test
     public void collect() throws Exception {
 
-        var transactionHash = "e073a728a16f154b0b3d0c8c2c4e086c006f3590b4f481ce0d7d527115a87d0f";
+        var transactionHash = "<insert tx hash here>";
         var outputIndex = 0;
 
         var utxo = bfBackendService.getUtxoService().getTxOutput(transactionHash, outputIndex).getValue();
@@ -142,14 +142,9 @@ public class VestingTest {
                 .feePayer(beneficiary.baseAddress())
                 .validFrom(recentSlot)
                 .validTo(recentSlot + 120)
-                .withTxEvaluator(ogmiosTE())
                 .completeAndWait();
 
 
-    }
-
-    private TransactionEvaluator ogmiosTE() {
-        return new OgmiosTransactionEvaluator("http://ryzen:31357");
     }
 
 }

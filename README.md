@@ -45,3 +45,21 @@ some logs as below. Please take note of the transaction hash in your logs. In th
 `7716f0107b42598e2bc29774c3415850aa15c3888bcd466a068b326f5ed6cc54`
 
 ![Send to Contract.png](images/send-to-contract.png)
+
+The `payToContract()` test makes the wallet of the owner to pay (lock) a certain amount of ada in the contract. Along with 
+the ada, a certain amount of info is attached in the datum of the contract. In particular we have:
+1. the public key of the owner
+2. the public keu of the beneficiary
+3. a timestamp representing the moment in time since when the beneficiary can collect its funds
+
+Let's make the owner now withdraw its funds: copy the transaction hash from the logs, and paste it into the `transactionHash` variable
+of the `withdraw()` test method and run it.
+
+When running the code, the logs will look similar.
+
+![Withdraw from contract.png](images/withdraw.png)
+
+We successfully _cancelled_ the vesting operation. So if we want to test the collect case, we need to execute again the `payToContract`
+test, wait the amount of time required for the contract to allow vesting, and then execute the `collect` test.
+
+By default in the code it's hardcoded to 30 minutes, but you get play around different value to accelerate your testing.
