@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.cardanofoundation:cf-cardano-conversions-java:1.2.0'
+
+    implementation('com.bloxbean.cardano:cardano-client-lib:0.6.0')
+    implementation('com.bloxbean.cardano:cardano-client-backend-blockfrost:0.6.0')
+
+    compileOnly 'com.bloxbean.cardano:cardano-client-annotation-processor:0.6.0'
+    annotationProcessor 'com.bloxbean.cardano:cardano-client-annotation-processor:0.6.0'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+}
+
+test {
+    useJUnitPlatform()
+}
