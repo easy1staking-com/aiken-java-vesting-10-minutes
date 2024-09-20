@@ -15,6 +15,7 @@ dependencies {
 
     implementation('com.bloxbean.cardano:cardano-client-lib:0.6.0')
     implementation('com.bloxbean.cardano:cardano-client-backend-blockfrost:0.6.0')
+    implementation('com.bloxbean.cardano:cardano-client-backend-ogmios:0.6.0')
 
     compileOnly 'com.bloxbean.cardano:cardano-client-annotation-processor:0.6.0'
     annotationProcessor 'com.bloxbean.cardano:cardano-client-annotation-processor:0.6.0'
